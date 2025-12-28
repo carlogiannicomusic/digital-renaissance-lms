@@ -1,26 +1,102 @@
 @import "tailwindcss";
 
+/* Digital Renaissance Brand Colors */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --dr-black: #000000;
+  --dr-white: #FFFFFF;
+  --dr-yellow: #F2EC62;
+  --dr-blue: #4db8d3;
+  --dr-peach: #f39a76;
+  --dr-purple: #d384d2;
+  --dr-green: #22b573;
+
+  --background: var(--dr-white);
+  --foreground: var(--dr-black);
 }
 
 @theme inline {
+  /* Digital Renaissance Color Palette */
+  --color-dr-black: var(--dr-black);
+  --color-dr-white: var(--dr-white);
+  --color-dr-yellow: var(--dr-yellow);
+  --color-dr-blue: var(--dr-blue);
+  --color-dr-peach: var(--dr-peach);
+  --color-dr-purple: var(--dr-purple);
+  --color-dr-green: var(--dr-green);
+
+  /* Theme colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Typography - Proxima Nova with fallbacks */
+  --font-sans: "Proxima Nova", "Helvetica Neue", "Avenir", system-ui, -apple-system, sans-serif;
+  --font-heading: "Proxima Nova", "Helvetica Neue", "Avenir", system-ui, -apple-system, sans-serif;
+
+  /* Font weights for Proxima Nova */
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Proxima Nova", "Helvetica Neue", "Avenir", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Digital Renaissance Typography Utilities */
+.font-heading {
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-bold);
+}
+
+.font-display {
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-extrabold);
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+/* Grid System Base - Divisions of 2 */
+.grid-dr {
+  display: grid;
+}
+
+.grid-dr-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-dr-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.grid-dr-8 {
+  grid-template-columns: repeat(8, 1fr);
+}
+
+.grid-dr-16 {
+  grid-template-columns: repeat(16, 1fr);
+}
+
+/* Prevent any overlays or backdrops from blocking interaction */
+[data-sonner-toaster] {
+  pointer-events: none !important;
+}
+
+[data-sonner-toast] {
+  pointer-events: auto !important;
+}
+
+/* Ensure no loading overlays block interaction */
+body::before,
+body::after {
+  pointer-events: none !important;
+}
+
+/* Remove any potential backdrop filters that could create dark overlays */
+.backdrop-blur,
+.backdrop-filter {
+  pointer-events: none !important;
 }
