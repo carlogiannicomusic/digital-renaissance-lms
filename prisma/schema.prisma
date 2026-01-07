@@ -119,12 +119,12 @@ model Course {
 
   schedules     CourseSchedule[]
   enrollments   Enrollment[]
-  groups        StudentGroup[]
   chatRooms     ChatRoom[]
   materials     CourseMaterial[]
   grades        Grade[]
   attendances   Attendance[]
   assignments   Assignment[]
+  lessons       Lesson[]
 
   @@map("courses")
 }
@@ -149,43 +149,27 @@ model Enrollment {
   student       User           @relation(fields: [studentId], references: [id], onDelete: Cascade)
   courseId      String
   course        Course         @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  groupId       String?
-  group         StudentGroup?  @relation(fields: [groupId], references: [id], onDelete: SetNull)
   enrolledAt    DateTime       @default(now())
 
   @@unique([studentId, courseId])
   @@map("enrollments")
 }
 
-model StudentGroup {
-  id            String           @id @default(uuid())
+model Lesson {
+  id            String    @id @default(uuid())
   courseId      String
-  course        Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  name          String
+  course        Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  title         String
   description   String?
-  maxCapacity   Int?
-  createdAt     DateTime         @default(now())
-  updatedAt     DateTime         @updatedAt
+  content       String?
+  orderIndex    Int       @default(0)
+  duration      Int?      // Duration in minutes
+  videoUrl      String?
+  isPublished   Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
-  schedules     GroupSchedule[]
-  enrollments   Enrollment[]
-
-  @@unique([courseId, name])
-  @@map("student_groups")
-}
-
-model GroupSchedule {
-  id            String         @id @default(uuid())
-  groupId       String
-  group         StudentGroup   @relation(fields: [groupId], references: [id], onDelete: Cascade)
-  startTime     DateTime
-  endTime       DateTime
-  dayOfWeek     DayOfWeek
-  location      String?
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-
-  @@map("group_schedules")
+  @@map("lessons")
 }
 
 model ChatRoom {

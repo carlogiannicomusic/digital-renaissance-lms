@@ -2,10 +2,10 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { CourseSchedule } from '@/components/courses/course-schedule'
 import { ScheduleForm } from '@/components/courses/schedule-form'
-import { GroupList } from '@/components/groups'
+import { LessonList } from '@/components/lessons'
 import { prisma } from '@/lib/db/prisma'
 import { notFound } from 'next/navigation'
-import { FileText, Users, Clock, DollarSign, MapPin, GraduationCap, BookOpen } from 'lucide-react'
+import { FileText, Users, Clock, DollarSign, MapPin, GraduationCap, BookOpen, PlayCircle } from 'lucide-react'
 import { getCourseDetails, getCourseTeacher, ROOMS } from '@/lib/course-data'
 
 async function getCourse(id: string) {
@@ -23,17 +23,6 @@ async function getCourse(id: string) {
         schedules: {
           orderBy: {
             dayOfWeek: 'asc',
-          },
-        },
-        enrollments: {
-          include: {
-            student: {
-              select: {
-                id: true,
-                name: true,
-                email: true,
-              },
-            },
           },
         },
         _count: {
@@ -239,9 +228,22 @@ export default async function CoursePage({
         </div>
       </section>
 
-      {/* Student Groups Section */}
-      <section>
-        <GroupList courseId={id} />
+      {/* Lessons Section */}
+      <section className="bg-dr-green border-b-4 border-dr-black">
+        <div className="max-w-7xl mx-auto px-8 md:px-16 py-12">
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="font-display text-3xl md:text-4xl text-dr-black uppercase">
+              <PlayCircle className="inline h-8 w-8 mr-3" />
+              COURSE LESSONS
+            </h2>
+            <Link href={`/courses/${id}/lessons`}>
+              <Button variant="black">
+                MANAGE LESSONS
+              </Button>
+            </Link>
+          </div>
+          <LessonList courseId={id} />
+        </div>
       </section>
 
       {/* Schedule Management Grid */}
@@ -253,12 +255,7 @@ export default async function CoursePage({
 
         {/* Schedule Form - Yellow */}
         <div className="bg-dr-yellow p-8 md:p-12">
-          <ScheduleForm
-            courseId={id}
-            onSuccess={() => {
-              window.location.reload()
-            }}
-          />
+          <ScheduleForm courseId={id} />
         </div>
       </section>
 
