@@ -8,39 +8,34 @@ import { FileText, Users, Clock, DollarSign, MapPin, GraduationCap, BookOpen } f
 import { getCourseDetails, getCourseTeacher, ROOMS } from '@/lib/course-data'
 
 async function getCourse(id: string) {
-  try {
-    const course = await prisma.course.findUnique({
-      where: { id },
-      include: {
-        teacher: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-          },
-        },
-        schedules: {
-          orderBy: {
-            dayOfWeek: 'asc',
-          },
-        },
-        _count: {
-          select: {
-            enrollments: true,
-          },
+  const course = await prisma.course.findUnique({
+    where: { id },
+    include: {
+      teacher: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
         },
       },
-    })
+      schedules: {
+        orderBy: {
+          dayOfWeek: 'asc',
+        },
+      },
+      _count: {
+        select: {
+          enrollments: true,
+        },
+      },
+    },
+  })
 
-    if (!course) {
-      notFound()
-    }
-
-    return course
-  } catch (error) {
-    console.error('Error fetching course:', error)
+  if (!course) {
     notFound()
   }
+
+  return course
 }
 
 export default async function CoursePage({
