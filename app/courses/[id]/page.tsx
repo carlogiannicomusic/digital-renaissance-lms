@@ -2,10 +2,9 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { CourseSchedule } from '@/components/courses/course-schedule'
 import { ScheduleForm } from '@/components/courses/schedule-form'
-import { LessonList } from '@/components/lessons'
 import { prisma } from '@/lib/db/prisma'
 import { notFound } from 'next/navigation'
-import { FileText, Users, Clock, DollarSign, MapPin, GraduationCap, BookOpen, PlayCircle } from 'lucide-react'
+import { FileText, Users, Clock, DollarSign, MapPin, GraduationCap, BookOpen } from 'lucide-react'
 import { getCourseDetails, getCourseTeacher, ROOMS } from '@/lib/course-data'
 
 async function getCourse(id: string) {
@@ -225,24 +224,6 @@ export default async function CoursePage({
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Lessons Section */}
-      <section className="bg-dr-green border-b-4 border-dr-black">
-        <div className="max-w-7xl mx-auto px-8 md:px-16 py-12">
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="font-display text-3xl md:text-4xl text-dr-black uppercase">
-              <PlayCircle className="inline h-8 w-8 mr-3" />
-              COURSE LESSONS
-            </h2>
-            <Link href={`/courses/${id}/lessons`}>
-              <Button variant="black">
-                MANAGE LESSONS
-              </Button>
-            </Link>
-          </div>
-          <LessonList courseId={id} />
         </div>
       </section>
 
