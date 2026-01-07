@@ -119,6 +119,7 @@ model Course {
 
   schedules     CourseSchedule[]
   enrollments   Enrollment[]
+  groups        StudentGroup[]
   chatRooms     ChatRoom[]
   materials     CourseMaterial[]
   grades        Grade[]
@@ -143,15 +144,48 @@ model CourseSchedule {
 }
 
 model Enrollment {
-  id            String    @id @default(uuid())
+  id            String         @id @default(uuid())
   studentId     String
-  student       User      @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  student       User           @relation(fields: [studentId], references: [id], onDelete: Cascade)
   courseId      String
-  course        Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  enrolledAt    DateTime  @default(now())
+  course        Course         @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  groupId       String?
+  group         StudentGroup?  @relation(fields: [groupId], references: [id], onDelete: SetNull)
+  enrolledAt    DateTime       @default(now())
 
   @@unique([studentId, courseId])
   @@map("enrollments")
+}
+
+model StudentGroup {
+  id            String           @id @default(uuid())
+  courseId      String
+  course        Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  name          String
+  description   String?
+  maxCapacity   Int?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  schedules     GroupSchedule[]
+  enrollments   Enrollment[]
+
+  @@unique([courseId, name])
+  @@map("student_groups")
+}
+
+model GroupSchedule {
+  id            String         @id @default(uuid())
+  groupId       String
+  group         StudentGroup   @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  startTime     DateTime
+  endTime       DateTime
+  dayOfWeek     DayOfWeek
+  location      String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@map("group_schedules")
 }
 
 model ChatRoom {
