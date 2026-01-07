@@ -99,7 +99,7 @@ export default function Home() {
         fontSize: '0.9rem',
         opacity: 0.7
       }}>
-        API Server: http://192.168.1.95:3000
+        Build: 2025-01-07-v2
       </p>
     </div>
   )
